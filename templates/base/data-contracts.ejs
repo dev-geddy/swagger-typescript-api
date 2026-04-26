@@ -32,7 +32,15 @@ const dataContractTemplates = {
 type <%~ config.Ts.CodeGenKeyword.UtilRequiredKeys %><T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>
 <% } %>
 
+<%
+const isJsonLdEnabled = config.jsonLdOptions && config.jsonLdOptions.enabled;
+const isJsonLdSchemaType = (schemaType) =>
+  schemaType === 'jsonld-context' ||
+  schemaType === 'jsonld-entity' ||
+  schemaType === 'jsonld-type';
+%>
 <% for (const contract of modelTypes) { %>
+<% if (isJsonLdEnabled && isJsonLdSchemaType(contract.typeData && contract.typeData.schemaType)) { continue; } %>
   <%~ includeFile('@base/data-contract-jsdoc.ejs', { ...it, data: { ...contract, ...contract.typeData } }) %>
   <%~ contract.internal ? '' : 'export'%> <%~ (dataContractTemplates[contract.typeIdentifier] || dataContractTemplates.type)(contract) %>
 

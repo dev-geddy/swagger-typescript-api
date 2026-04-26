@@ -226,6 +226,26 @@ interface GenerateApiParamsBase {
     primitive?: MonoSchemaParser;
     discriminator?: MonoSchemaParser;
     array?: MonoSchemaParser;
+    jsonldContext?: MonoSchemaParser;
+    jsonldEntity?: MonoSchemaParser;
+    jsonldType?: MonoSchemaParser;
+  };
+
+  /**
+   * JSON-LD specific configuration options.
+   *
+   * Disabled by default. When enabled, schemas declaring the `x-jsonld`
+   * extension (or one of `x-jsonld-context` / `x-jsonld-type` / `x-jsonld-id`)
+   * are emitted as JSON-LD entities/contexts in addition to the regular data
+   * contracts. Schemas without the extension are unaffected.
+   */
+  jsonLdOptions?: {
+    /** Enable JSON-LD support (default: `false`). */
+    enabled?: boolean;
+    /** Emit context interfaces alongside entities (default: `true`). */
+    generateContext?: boolean;
+    /** Emit shared utility types (`JsonLdEntity`, `JsonLdGraph`, ...) (default: `true`). */
+    generateUtils?: boolean;
   };
 }
 
